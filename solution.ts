@@ -100,7 +100,7 @@ function getUniqueValues(
   return uniqueArray;
 }
 
-//solution of the problem-8
+//solution of the problem - 8
 interface Product {
   name: string;
   price: number;
