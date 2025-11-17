@@ -1,14 +1,14 @@
-# TypeScript Deep Dive: Interfaces vs Types and the Power of keyof
+# TypeScript গভীর আলোচনা: Interface vs Type এবং keyof এর শক্তি
 
-## Blog 1: Interfaces vs Types in TypeScript - Understanding the Differences
+## ব্লগ ১: TypeScript-এ Interface এবং Type-এর মধ্যে পার্থক্য
 
-### Introduction
+### ভূমিকা
 
-TypeScript offers two powerful ways to define custom types: **interfaces** and **type aliases**. While they often appear interchangeable, understanding their differences is crucial for writing maintainable and scalable TypeScript code. In this blog, we'll explore the key differences and when to use each.
+TypeScript কাস্টম টাইপ ডিফাইন করার জন্য দুটি শক্তিশালী উপায় প্রদান করে: **interface** এবং **type alias**। যদিও এগুলো প্রায়ই একে অপরের বিকল্প বলে মনে হয়, তবে রক্ষণাবেক্ষণযোগ্য এবং স্কেলেবল TypeScript কোড লেখার জন্য এদের মধ্যে পার্থক্য বোঝা অত্যন্ত গুরুত্বপূর্ণ। এই ব্লগে, আমরা মূল পার্থক্যগুলো এবং কখন কোনটি ব্যবহার করতে হবে তা জানব।
 
-### What are Interfaces?
+### Interface কী?
 
-Interfaces in TypeScript define the structure of an object. They are a contract that enforces specific properties and methods on objects.
+TypeScript-এ Interface একটি অবজেক্টের কাঠামো নির্ধারণ করে। এটি একটি চুক্তি যা অবজেক্টে নির্দিষ্ট প্রপার্টি এবং মেথড বাধ্যতামূলক করে।
 
 ```typescript
 interface User {
@@ -24,9 +24,9 @@ const user: User = {
 };
 ```
 
-### What are Type Aliases?
+### Type Alias কী?
 
-Type aliases create a new name for any type, including primitives, unions, tuples, and more complex types.
+Type alias যেকোনো টাইপের জন্য একটি নতুন নাম তৈরি করে, যার মধ্যে রয়েছে প্রিমিটিভ, ইউনিয়ন, টাপল এবং আরও জটিল টাইপ।
 
 ```typescript
 type User = {
@@ -39,11 +39,11 @@ type ID = string | number;
 type Coordinate = [number, number];
 ```
 
-### Key Differences
+### মূল পার্থক্যসমূহ
 
-#### 1. **Declaration Merging**
+#### ১. **Declaration Merging (ঘোষণা একত্রীকরণ)**
 
-Interfaces support declaration merging, allowing you to define the same interface multiple times, and TypeScript will merge them automatically.
+Interface declaration merging সমর্থন করে, যা আপনাকে একই interface একাধিকবার ডিফাইন করতে দেয় এবং TypeScript স্বয়ংক্রিয়ভাবে সেগুলো একত্রিত করে।
 
 ```typescript
 interface Animal {
@@ -54,14 +54,14 @@ interface Animal {
   age: number;
 }
 
-// Merged interface
+// মার্জ হওয়া interface
 const dog: Animal = {
   name: "Buddy",
   age: 5,
 };
 ```
 
-Type aliases **cannot** be merged:
+Type alias **একত্রিত করা যায় না**:
 
 ```typescript
 type Animal = {
@@ -74,11 +74,11 @@ type Animal = {
 };
 ```
 
-#### 2. **Extending and Implementing**
+#### ২. **Extending এবং Implementing**
 
-Both interfaces and types can be extended, but the syntax differs:
+Interface এবং type উভয়ই extend করা যায়, তবে তাদের সিনট্যাক্স ভিন্ন:
 
-**Interfaces:**
+**Interface:**
 
 ```typescript
 interface Animal {
@@ -95,7 +95,7 @@ class Labrador implements Dog {
 }
 ```
 
-**Types:**
+**Type:**
 
 ```typescript
 type Animal = {
@@ -107,9 +107,9 @@ type Dog = Animal & {
 };
 ```
 
-#### 3. **Union and Intersection Types**
+#### ৩. **Union এবং Intersection Types**
 
-Type aliases excel at creating union and intersection types:
+Type alias union এবং intersection টাইপ তৈরিতে দক্ষ:
 
 ```typescript
 type Status = "pending" | "approved" | "rejected";
@@ -121,16 +121,16 @@ type Admin = User & {
 };
 ```
 
-Interfaces cannot directly represent union types:
+Interface সরাসরি union টাইপ প্রতিনিধিত্ব করতে পারে না:
 
 ```typescript
-// Not possible with interfaces
+// Interface দিয়ে সম্ভব নয়
 interface Status = "pending" | "approved" | "rejected"; // Error
 ```
 
-#### 4. **Computed Properties**
+#### ৪. **Computed Properties**
 
-Type aliases can use computed properties more flexibly:
+Type alias computed properties আরও নমনীয়ভাবে ব্যবহার করতে পারে:
 
 ```typescript
 type Keys = "name" | "age";
@@ -138,72 +138,72 @@ type Person = {
   [K in Keys]: string;
 };
 
-// Equivalent to:
+// সমতুল্য:
 // type Person = {
 //   name: string;
 //   age: string;
 // }
 ```
 
-#### 5. **Primitive Types**
+#### ৫. **Primitive Types**
 
-Type aliases can represent primitives, unions, and tuples, while interfaces cannot:
+Type alias প্রিমিটিভ, ইউনিয়ন এবং টাপল প্রতিনিধিত্ব করতে পারে, কিন্তু interface পারে না:
 
 ```typescript
 type StringOrNumber = string | number; // ✓
 type Coordinates = [number, number]; // ✓
 type Callback = (data: string) => void; // ✓
 
-// Interfaces cannot do this
+// Interface দিয়ে এটি করা যায় না
 interface StringOrNumber = string | number; // Error
 ```
 
-### Performance Considerations
+### পারফরম্যান্স বিবেচনা
 
-In most cases, there's no significant performance difference. However, interfaces may have a slight edge in compilation speed for large projects due to their ability to be cached more efficiently by the TypeScript compiler.
+বেশিরভাগ ক্ষেত্রে, কোনো উল্লেখযোগ্য পারফরম্যান্স পার্থক্য নেই। তবে, বড় প্রজেক্টে কম্পাইলেশন গতির দিক থেকে interface একটু এগিয়ে থাকতে পারে কারণ TypeScript কম্পাইলার এগুলো আরও দক্ষতার সাথে ক্যাশ করতে পারে।
 
-### When to Use What?
+### কখন কোনটি ব্যবহার করবেন?
 
-**Use Interfaces when:**
+**Interface ব্যবহার করুন যখন:**
 
-- Defining object shapes and class contracts
-- You need declaration merging (e.g., extending third-party libraries)
-- Creating public APIs that might be extended by consumers
-- Working with object-oriented programming patterns
+- অবজেক্টের আকৃতি এবং class contract ডিফাইন করা হচ্ছে
+- Declaration merging প্রয়োজন (যেমন, তৃতীয় পক্ষের লাইব্রেরি extend করা)
+- পাবলিক API তৈরি করছেন যা ব্যবহারকারীরা extend করতে পারবে
+- Object-oriented programming প্যাটার্নের সাথে কাজ করছেন
 
-**Use Type Aliases when:**
+**Type Alias ব্যবহার করুন যখন:**
 
-- Creating union or intersection types
-- Defining primitive type aliases
-- Working with tuples
-- Creating complex mapped or conditional types
-- You need more flexibility with type composition
+- Union বা intersection টাইপ তৈরি করছেন
+- Primitive টাইপ alias ডিফাইন করছেন
+- Tuple নিয়ে কাজ করছেন
+- জটিল mapped বা conditional টাইপ তৈরি করছেন
+- টাইপ composition-এ আরও নমনীয়তা প্রয়োজন
 
-### Best Practices
+### সর্বোত্তম অনুশীলন
 
-1. **Consistency**: Pick a convention for your project and stick to it
-2. **Public APIs**: Prefer interfaces for public APIs to allow declaration merging
-3. **Complex Types**: Use type aliases for unions, intersections, and mapped types
-4. **React Props**: Both work well, but many teams prefer `type` for React component props
-5. **Object Shapes**: If defining simple object shapes, either works—choose based on your team's convention
+১. **সামঞ্জস্যতা**: আপনার প্রজেক্টের জন্য একটি কনভেনশন বেছে নিন এবং তাতে লেগে থাকুন
+২. **পাবলিক API**: পাবলিক API-এর জন্য interface পছন্দ করুন declaration merging এর জন্য
+৩. **জটিল টাইপ**: Union, intersection এবং mapped টাইপের জন্য type alias ব্যবহার করুন
+৪. **React Props**: উভয়ই ভালো কাজ করে, তবে অনেক টিম React component props-এর জন্য `type` পছন্দ করে
+৫. **অবজেক্ট আকৃতি**: সরল অবজেক্ট আকৃতি ডিফাইন করার সময়, যেকোনোটি কাজ করে—আপনার টিমের কনভেনশনের উপর ভিত্তি করে বেছে নিন
 
-### Conclusion
+### উপসংহার
 
-Both interfaces and type aliases are powerful tools in TypeScript's type system. Understanding their differences helps you choose the right tool for each situation. Remember: interfaces are ideal for object contracts and extensibility, while type aliases offer more flexibility for complex type compositions.
+Interface এবং type alias উভয়ই TypeScript-এর টাইপ সিস্টেমের শক্তিশালী টুল। তাদের পার্থক্য বোঝা আপনাকে প্রতিটি পরিস্থিতিতে সঠিক টুল বেছে নিতে সাহায্য করে। মনে রাখবেন: Interface অবজেক্ট চুক্তি এবং extensibility-এর জন্য আদর্শ, যখন type alias জটিল টাইপ composition-এ আরও নমনীয়তা প্রদান করে।
 
 ---
 
-## Blog 2: Mastering the `keyof` Keyword in TypeScript
+## ব্লগ ২: TypeScript-এ `keyof` কীওয়ার্ডে দক্ষতা অর্জন
 
-### Introduction
+### ভূমিকা
 
-TypeScript's `keyof` operator is a powerful feature that enables type-safe property access and manipulation. It's a cornerstone of TypeScript's advanced type system, allowing developers to create more flexible and maintainable code. In this blog, we'll explore what `keyof` does, how to use it, and practical examples.
+TypeScript-এর `keyof` অপারেটর একটি শক্তিশালী ফিচার যা টাইপ-নিরাপদ প্রপার্টি অ্যাক্সেস এবং ম্যানিপুলেশন সম্ভব করে। এটি TypeScript-এর উন্নত টাইপ সিস্টেমের একটি ভিত্তি, যা ডেভেলপারদের আরও নমনীয় এবং রক্ষণাবেক্ষণযোগ্য কোড তৈরি করতে দেয়। এই ব্লগে, আমরা জানব `keyof` কী করে, কীভাবে এটি ব্যবহার করতে হয় এবং ব্যবহারিক উদাহরণ দেখব।
 
-### What is `keyof`?
+### `keyof` কী?
 
-The `keyof` operator takes an object type and produces a string or numeric literal union of its keys. It's a **type operator** that creates a new type from the keys of an existing type.
+`keyof` অপারেটর একটি অবজেক্ট টাইপ নেয় এবং তার কী-গুলোর একটি string বা numeric literal union তৈরি করে। এটি একটি **টাইপ অপারেটর** যা বিদ্যমান টাইপের কী থেকে একটি নতুন টাইপ তৈরি করে।
 
-### Basic Usage
+### মৌলিক ব্যবহার
 
 ```typescript
 interface Person {
@@ -222,11 +222,11 @@ key = "email"; // ✓ Valid
 key = "address"; // ✗ Error: Type '"address"' is not assignable to type 'keyof Person'
 ```
 
-### Practical Examples
+### ব্যবহারিক উদাহরণসমূহ
 
-#### Example 1: Type-Safe Property Access
+#### উদাহরণ ১: টাইপ-নিরাপদ প্রপার্টি অ্যাক্সেস
 
-Create a function that safely accesses object properties:
+একটি ফাংশন তৈরি করুন যা নিরাপদভাবে অবজেক্ট প্রপার্টি অ্যাক্সেস করে:
 
 ```typescript
 interface User {
@@ -252,11 +252,11 @@ const userAge = getProperty(user, "age"); // Type: number
 // const invalid = getProperty(user, "invalid"); // Error: Argument of type '"invalid"' is not assignable
 ```
 
-This ensures compile-time safety when accessing object properties!
+এটি অবজেক্ট প্রপার্টি অ্যাক্সেস করার সময় কম্পাইল-টাইম নিরাপত্তা নিশ্চিত করে!
 
-#### Example 2: Dynamic Property Updates
+#### উদাহরণ ২: ডায়নামিক প্রপার্টি আপডেট
 
-Create a type-safe update function:
+একটি টাইপ-নিরাপদ আপডেট ফাংশন তৈরি করুন:
 
 ```typescript
 interface Product {
@@ -289,9 +289,9 @@ product = updateProduct(product, "inStock", false); // ✓ Valid
 // product = updateProduct(product, "price", "cheap");  // ✗ Error: wrong type
 ```
 
-#### Example 3: Creating a Pick Function
+#### উদাহরণ ৩: Pick ফাংশন তৈরি করা
 
-Implement a custom `pick` function that extracts specific properties:
+একটি কাস্টম `pick` ফাংশন implement করুন যা নির্দিষ্ট প্রপার্টি extract করে:
 
 ```typescript
 function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
@@ -324,9 +324,9 @@ const publicInfo = pick(employee, ["id", "name", "department"]);
 // Type: { id: number; name: string; department: string; }
 ```
 
-#### Example 4: Mapped Types with `keyof`
+#### উদাহরণ ৪: `keyof` এর সাথে Mapped Types
 
-Create dynamic types based on existing ones:
+বিদ্যমান টাইপের উপর ভিত্তি করে ডায়নামিক টাইপ তৈরি করুন:
 
 ```typescript
 interface Settings {
@@ -335,25 +335,25 @@ interface Settings {
   notifications: boolean;
 }
 
-// Create a type where all properties are optional
+// একটি টাইপ তৈরি করুন যেখানে সব প্রপার্টি optional
 type PartialSettings = {
   [K in keyof Settings]?: Settings[K];
 };
 
-// Create a type where all properties are readonly
+// একটি টাইপ তৈরি করুন যেখানে সব প্রপার্টি readonly
 type ReadonlySettings = {
   readonly [K in keyof Settings]: Settings[K];
 };
 
-// Create a type that converts all properties to strings
+// একটি টাইপ তৈরি করুন যা সব প্রপার্টিকে string-এ রূপান্তর করে
 type SettingsAsStrings = {
   [K in keyof Settings]: string;
 };
 ```
 
-#### Example 5: Form Validation with `keyof`
+#### উদাহরণ ৫: `keyof` দিয়ে ফর্ম ভ্যালিডেশন
 
-Build a type-safe form validator:
+একটি টাইপ-নিরাপদ ফর্ম ভ্যালিডেটর তৈরি করুন:
 
 ```typescript
 interface FormData {
@@ -406,9 +406,9 @@ console.log(errors);
 // }
 ```
 
-#### Example 6: Creating Generic Event Handlers
+#### উদাহরণ ৬: জেনেরিক ইভেন্ট হ্যান্ডলার তৈরি করা
 
-Type-safe event handling with `keyof`:
+`keyof` দিয়ে টাইপ-নিরাপদ event handling:
 
 ```typescript
 interface Events {
@@ -453,9 +453,9 @@ emitter.emit("click", { x: 100, y: 200 });
 emitter.emit("submit", { formData: { name: "John" } });
 ```
 
-### Advanced Use Cases
+### উন্নত ব্যবহার ক্ষেত্র
 
-#### Combining `keyof` with Conditional Types
+#### Conditional Types এর সাথে `keyof` একত্রিত করা
 
 ```typescript
 interface Config {
@@ -477,7 +477,7 @@ type ConfigStringKeys = StringKeys<Config>; // "apiUrl"
 type ConfigNumberKeys = NumberKeys<Config>; // "timeout" | "retries"
 ```
 
-#### Using `keyof` with Index Signatures
+#### Index Signatures এর সাথে `keyof` ব্যবহার করা
 
 ```typescript
 interface Dictionary {
@@ -485,20 +485,20 @@ interface Dictionary {
 }
 
 type DictionaryKeys = keyof Dictionary; // string | number
-// Note: number is included because JS converts numeric keys to strings
+// নোট: number অন্তর্ভুক্ত কারণ JS সংখ্যাসূচক কী-গুলোকে string-এ রূপান্তর করে
 ```
 
-### Benefits of Using `keyof`
+### `keyof` ব্যবহারের সুবিধাসমূহ
 
-1. **Type Safety**: Prevents accessing non-existent properties at compile time
-2. **Refactoring**: When you rename a property, TypeScript will catch all affected uses
-3. **Autocomplete**: IDEs can provide intelligent suggestions for valid keys
-4. **Self-Documenting**: Code becomes more readable and self-explanatory
-5. **Reduces Runtime Errors**: Catches many errors during development
+১. **টাইপ নিরাপত্তা**: কম্পাইল টাইমে অস্তিত্বহীন প্রপার্টি অ্যাক্সেস প্রতিরোধ করে
+২. **রিফ্যাক্টরিং**: যখন আপনি একটি প্রপার্টি রিনেম করেন, TypeScript সমস্ত প্রভাবিত ব্যবহার ধরবে
+৩. **অটোকমপ্লিট**: IDE বৈধ কী-এর জন্য বুদ্ধিমান পরামর্শ প্রদান করতে পারে
+৪. **স্ব-নথিভুক্ত**: কোড আরও পাঠযোগ্য এবং স্ব-ব্যাখ্যামূলক হয়ে ওঠে
+৫. **রানটাইম ত্রুটি হ্রাস**: ডেভেলপমেন্টের সময় অনেক ত্রুটি ধরে ফেলে
 
-### Common Patterns
+### সাধারণ প্যাটার্নসমূহ
 
-#### Pattern 1: Nested Property Access
+#### প্যাটার্ন ১: নেস্টেড প্রপার্টি অ্যাক্সেস
 
 ```typescript
 type DeepKeyOf<T> = {
@@ -510,7 +510,7 @@ type DeepKeyOf<T> = {
 }[keyof T];
 ```
 
-#### Pattern 2: Required Keys
+#### প্যাটার্ন ২: প্রয়োজনীয় কী-সমূহ
 
 ```typescript
 type RequiredKeys<T> = {
@@ -518,18 +518,18 @@ type RequiredKeys<T> = {
 }[keyof T];
 ```
 
-### Conclusion
+### উপসংহার
 
-The `keyof` operator is an essential tool in TypeScript's type system. It enables type-safe property access, powers advanced utility types, and helps create flexible, reusable functions. By mastering `keyof`, you can write more robust TypeScript code that catches errors at compile time rather than runtime.
+`keyof` অপারেটর TypeScript-এর টাইপ সিস্টেমে একটি অপরিহার্য টুল। এটি টাইপ-নিরাপদ প্রপার্টি অ্যাক্সেস সক্ষম করে, উন্নত utility টাইপগুলোকে শক্তি প্রদান করে এবং নমনীয়, পুনর্ব্যবহারযোগ্য ফাংশন তৈরি করতে সাহায্য করে। `keyof` তে দক্ষতা অর্জন করে, আপনি আরও শক্তিশালী TypeScript কোড লিখতে পারবেন যা রানটাইমের পরিবর্তে কম্পাইল টাইমে ত্রুটি ধরে।
 
-Whether you're building form validators, creating generic utility functions, or designing type-safe APIs, `keyof` is a fundamental building block that will elevate your TypeScript skills to the next level.
+আপনি ফর্ম ভ্যালিডেটর তৈরি করুন, জেনেরিক utility ফাংশন তৈরি করুন বা টাইপ-নিরাপদ API ডিজাইন করুন না কেন, `keyof` একটি মৌলিক বিল্ডিং ব্লক যা আপনার TypeScript দক্ষতাকে পরবর্তী স্তরে নিয়ে যাবে।
 
-### Key Takeaways
+### মূল বিষয়সমূহ
 
-- `keyof` creates a union type of an object's keys
-- It enables type-safe property access and manipulation
-- Combine `keyof` with generics for powerful, reusable functions
-- Use it with mapped types to transform existing types
-- It's essential for building type-safe libraries and frameworks
+- `keyof` একটি অবজেক্টের কী-গুলোর union টাইপ তৈরি করে
+- এটি টাইপ-নিরাপদ প্রপার্টি অ্যাক্সেস এবং ম্যানিপুলেশন সক্ষম করে
+- শক্তিশালী, পুনর্ব্যবহারযোগ্য ফাংশনের জন্য `keyof` কে generics এর সাথে একত্রিত করুন
+- বিদ্যমান টাইপ রূপান্তর করতে এটি mapped টাইপের সাথে ব্যবহার করুন
+- টাইপ-নিরাপদ লাইব্রেরি এবং ফ্রেমওয়ার্ক তৈরির জন্য এটি অপরিহার্য
 
-Start incorporating `keyof` into your TypeScript projects today, and experience the power of compile-time safety!
+আজই আপনার TypeScript প্রজেক্টে `keyof` অন্তর্ভুক্ত করা শুরু করুন এবং কম্পাইল-টাইম নিরাপত্তার শক্তি অনুভব করুন!
