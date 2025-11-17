@@ -1,14 +1,14 @@
-# 📌 ব্লগ ১: TypeScript-এ Interface vs Type – কোনটা কখন ব্যবহার করবেন?
+# ব্লগ ১: TypeScript-এ Interface vs Type - কোনটা কখন ব্যবহার করবেন?
 
-TypeScript ব্যবহার করতে করতে আমরা প্রায়ই একটা দ্বিধায় পড়ি—**interface** আর **type alias** আসলে কীভাবে আলাদা? দুটোই তো দেখতেও বেশ মিল! কিন্তু বাস্তবে দুটির আলাদা উদ্দেশ্য আছে, আর সেই কারণেই পার্থক্যগুলো জানা জরুরি।
+TypeScript ব্যবহার করতে করতে আমরা প্রায়ই একটা দ্বিধায় পড়ি-**interface** আর **type alias** আসলে কীভাবে আলাদা? দুটোই তো দেখতেও বেশ মিল! কিন্তু বাস্তবে দুটির আলাদা উদ্দেশ্য আছে, আর সেই কারণেই পার্থক্যগুলো জানা জরুরি।
 
 চলুন সহজভাবে বুঝে নিই। 👇
 
 ---
 
-## 🔹 Interface কী?
+## Interface কী?
 
-এক কথায়, Interface হলো **অবজেক্টের ব্লুপ্রিন্ট**। অবজেক্টের কোন কোন প্রপার্টি থাকবে—এটাই Interface বলে দেয়।
+এক কথায়, Interface হলো **অবজেক্টের ব্লুপ্রিন্ট**। অবজেক্টের কোন কোন প্রপার্টি থাকবে-এটাই Interface বলে দেয়।
 
 ```ts
 interface User {
@@ -22,22 +22,22 @@ Interface সাধারণত অবজেক্ট শেপ ডিফাই�
 
 ---
 
-## 🔹 Type Alias কী?
+## Type Alias কী?
 
-Type alias অনেকটা "টাইপকে একটা নাম দেওয়া"র মতো। শুধু অবজেক্ট নয়—**primitive, union, tuple, function signature**—সবকিছুই Type দিয়ে করা যায়।
+Type alias অনেকটা "টাইপকে একটা নাম দেওয়া"র মতো। শুধু অবজেক্ট নয়-**primitive, union, tuple, function signature**-সবকিছুই Type দিয়ে করা যায়।
 
 ```ts
 type ID = string | number;
 type Coordinate = [number, number];
 ```
 
-Interface এত নমনীয় নয়।
+Interface এরকম নয়।
 
 ---
 
-## 🔍 বড় পার্থক্যগুলো সহজ ভাষায়
+## বড় পার্থক্যগুলো সহজ ভাষায়
 
-### 1️⃣ **Declaration Merging – Interface-এর সুপারপাওয়ার**
+### **Declaration Merging – Interface-এর আলাদা বৈশিষ্ট্য**
 
 Interface একাধিকবার ডিফাইন করলে TypeScript এগুলোকে অটো-মার্জ করে।
 
@@ -51,11 +51,11 @@ interface Animal {
 ```
 
 কিন্তু Type alias?
-❌ Duplicate error দিবে — মার্জ করতে পারে না।
+Duplicate error দিবে - মার্জ করতে পারে না।
 
 ---
 
-### 2️⃣ **Extending**
+### **Extending**
 
 দুটো দিয়েই extend করা যায়, কিন্তু syntax আলাদা।
 
@@ -75,17 +75,17 @@ type Dog = Animal & { breed: string };
 
 ---
 
-### 3️⃣ **Union Types: Type জিতে যায়**
+### **Union Types: Type দিয়ে হয়ে যায়**
 
 ```ts
 type Status = "pending" | "approved" | "rejected";
 ```
 
-Interface এটা করতে পারে না।
+কিন্তু Interface এটা করতে পারে না।
 
 ---
 
-### 4️⃣ **Mapped/Computed Types: Type আরও শক্তিশালী**
+### **Mapped/Computed Types: এখানে Type-ই আসল বস**
 
 ```ts
 type Person = {
@@ -97,55 +97,55 @@ type Person = {
 
 ---
 
-### 5️⃣ **Primitive বা tuple—Interface পারে না, Type পারে**
+### **Primitive বা tuple-Interface পারে না, Type পারে**
 
-Tuple, union, function type—এসব সবই type alias-এর মাঠ।
-
----
-
-## ⚡ পারফরম্যান্স?
-
-বড় প্রজেক্টে interface একটু দ্রুত কাজ করতে পারে — তবে পার্থক্য খুবই সামান্য।
+Tuple, union, function type-এসব সবই type alias-এর মাঠ।
 
 ---
 
-## 🎯 তাহলে কখন কোনটা ব্যবহার করবেন?
+## পারফরম্যান্স?
 
-### ✔ Interface ব্যবহার করুন যখন—
+বড় প্রজেক্টে interface একটু দ্রুত কাজ করতে পারে - তবে পার্থক্য খুবই সামান্য।
+
+---
+
+## তাহলে কখন কোনটা ব্যবহার করবেন?
+
+### ✔ Interface ব্যবহার করুন যখন-
 
 - অবজেক্টের আকৃতি নির্ধারণ করবেন
 - ক্লাসের সাথে কাজ করছেন
 - লাইব্রেরি/পাবলিক API ডিফাইন করছেন
 - Declaration merging দরকার
 
-### ✔ Type ব্যবহার করুন যখন—
+### ✔ Type ব্যবহার করুন যখন-
 
 - Union/Intersection প্রয়োজন
 - Tuple বা primitive টাইপ দরকার
 - জটিল mapped বা conditional টাইপ তৈরি করছেন
-- React props টাইপ করতে—অনেক টিম Type ব্যবহার করে
+- React props টাইপ করতে-অনেক টিম Type ব্যবহার করে
 
 ---
 
-## 📝 সারসংক্ষেপ
+## সারসংক্ষেপ
 
-Type এবং Interface—দুটোই শক্তিশালী।
+Type এবং Interface-দুটোই শক্তিশালী।
 Object modeling? → Interface
 Type composition ও flexibility? → Type alias
 উভয়ের শক্তি কাজে লাগানোই স্মার্ট কাজ।
 
 ---
 
-# 📌 ব্লগ ২: TypeScript-এর `keyof` — সহজ ভাষায় বোঝা
+# ব্লগ ২: TypeScript-এর `keyof` - সহজ ভাষায় বোঝা
 
-TypeScript শেখার একটা টার্নিং পয়েন্ট আছে—যখন আপনি `keyof` বুঝে ফেলেন।
-এরপর আপনার টাইপ-নিরাপত্তা, utility functions—সবকিছু অনেক লেভেল-আপ হয়ে যায়।
+TypeScript শেখার একটা টার্নিং পয়েন্ট আছে-যখন আপনি `keyof` বুঝে ফেলেন।
+এরপর আপনার টাইপ-নিরাপত্তা, utility functions-সবকিছু অনেক লেভেল-আপ হয়ে যায়।
 
 চলুন সহজভাবে দেখি।
 
 ---
 
-## 🔹 `keyof` কী?
+## `keyof` কী?
 
 কোনো object type-এর **সব key** নিয়ে একটি union টাইপ তৈরি করে।
 
@@ -163,9 +163,9 @@ type PersonKeys = keyof Person;
 
 ---
 
-## 🎯 ব্যবহারিক উদাহরণ – বাস্তবে কেন দরকার?
+## ব্যবহারিক উদাহরণ – বাস্তবে কেন দরকার?
 
-### 1️⃣ টাইপ-নিরাপদ property getter
+### টাইপ-নিরাপদ property getter
 
 ```ts
 function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
@@ -177,7 +177,7 @@ function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
 
 ---
 
-### 2️⃣ টাইপ-নিরাপদ আপডেট ফাংশন
+### টাইপ-নিরাপদ আপডেট ফাংশন
 
 ```ts
 function updateProduct<K extends keyof Product>(
@@ -193,17 +193,17 @@ TypeScript নিজেই নিশ্চিত করবে value-এর ট�
 
 ---
 
-### 3️⃣ নিজের Pick utility তৈরি করা
+### নিজের Pick utility তৈরি করা
 
 ```ts
 function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> { ... }
 ```
 
-React, API response filtering — সবখানে কাজে লাগে।
+React, API response filtering - সবখানে কাজে লাগে।
 
 ---
 
-### 4️⃣ Mapped types আরও শক্তিশালী হয় `keyof` দিয়ে
+### Mapped types আরও শক্তিশালী হয় `keyof` দিয়ে
 
 ```ts
 type PartialSettings = { [K in keyof Settings]?: Settings[K] };
@@ -213,7 +213,7 @@ type PartialSettings = { [K in keyof Settings]?: Settings[K] };
 
 ---
 
-### 5️⃣ Form validation — একবার লিখে বারবার ব্যবহার করা যায়
+### Form validation - একবার লিখে বারবার ব্যবহার করা যায়
 
 ```ts
 type ValidationErrors<T> = { [K in keyof T]?: string };
@@ -223,7 +223,7 @@ type ValidationErrors<T> = { [K in keyof T]?: string };
 
 ---
 
-### 6️⃣ EventEmitter — টাইপ-নিরাপদ ইভেন্ট সিস্টেম
+### EventEmitter - টাইপ-নিরাপদ ইভেন্ট সিস্টেম
 
 ```ts
 on<K extends keyof Events>(event: K, callback: EventCallback<K>)
@@ -233,7 +233,7 @@ on<K extends keyof Events>(event: K, callback: EventCallback<K>)
 
 ---
 
-## 🔥 আরও অ্যাডভান্সড
+## আরও অ্যাডভান্সড
 
 ### Conditional types-এর সাথে `keyof`
 
@@ -247,12 +247,12 @@ type StringKeys<T> = {
 
 ---
 
-## 🎁 কেন `keyof` এত উপকারী?
+## কেন `keyof` এত উপকারী?
 
 - ভুল key দিলে কম্পাইল টাইমে ধরা পড়ে
 - IDE autocomplete আরও বুদ্ধিমান হয়
 - কোড রিফ্যাক্টর সহজ
 - Generic utility ফাংশন বানানো যায়
-- টাইপ-নিরাপদ লাইব্রেরি, ফর্ম, API—সবকিছু সম্ভব
+- টাইপ-নিরাপদ লাইব্রেরি, ফর্ম, API-সবকিছু সম্ভব
 
 ---
